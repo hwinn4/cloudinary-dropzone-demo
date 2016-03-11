@@ -1,5 +1,5 @@
 == Cloudinary-Dropzone Demo
 
 To run, you need a Cloudinary account. Download your own cloudinary.yml file with your API keys.
-- Signup: https://cloudinary.com/users/register/free
-- API keys: http://cloudinary.com/documentation/rails_integration#configuration
+<br>Signup: https://cloudinary.com/users/register/free
+<br>API keys: http://cloudinary.com/documentation/rails_integration#configuration
