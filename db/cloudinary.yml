@@ -1,0 +1,19 @@
+---
+development:
+  cloud_name: hilaryfuigo
+  api_key: '367863541133963'
+  api_secret: c3B790zqIN-RaRIhgfPYgGxcHvc
+  enhance_image_tag: true
+  static_image_support: false
+production:
+  cloud_name: hilaryfuigo
+  api_key: '367863541133963'
+  api_secret: c3B790zqIN-RaRIhgfPYgGxcHvc
+  enhance_image_tag: true
+  static_image_support: true
+test:
+  cloud_name: hilaryfuigo
+  api_key: '367863541133963'
+  api_secret: c3B790zqIN-RaRIhgfPYgGxcHvc
+  enhance_image_tag: true
+  static_image_support: false

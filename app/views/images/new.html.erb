@@ -1,0 +1,151 @@
+<div id="dropzone-area">
+
+  <div class="modal fade" id="directions" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+
+          <p class='text-center'>Drop Picture to Upload</p>
+
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div class="modal fade" id="upload-form" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Add Image</h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="row">
+            <div class="col-md-6">
+              <div id="preview" class="dropzone"></div> <!-- This is the dropzone element -->
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Photo note (for client or vendor)</label>
+                <input type="text" class="form-control" placeholder="Photo Note">
+              </div>
+
+              <div class="form-group">
+                <label>Recipient *</label>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                    Client
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                    Vendor
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">
+                    Client and Vendor
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class='col-md-6'></div>
+            <div class='col-md-6'>
+              <ul class="list-inline view-actions">
+                <li>
+                  <a class="lowlight-link" id="cancel" data-dismiss="modal" href="#">Cancel</a>
+                </li>
+                <li>
+                  <button name="button" id="submit" data-dismiss="modal" class="btn btn btn-primary">Save</button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+
+  <!-- template for uploaded dropzone files -->
+  <div id="preview-template" style="display: none;">
+    <div class="dz-preview dz-file-preview">
+      <div class="dz-details" id="preview-image">
+        <img data-dz-thumbnail />
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+<script type="text/javascript">
+
+  var hitTheController = function(xhr_response){
+    $.ajax({
+      type: 'POST',
+      url: '/images',
+      data: {image_id: xhr_response["public_id"]}
+    }).success(function(data) {
+//      debugger;
+      console.log("hit the controller");
+      $('body').html(data.template)
+    })
+  }
+
+  var myDropzone = new Dropzone(document.getElementById('dropzone-area'), {
+    autoProcessQueue: false,
+    uploadMultiple: false,
+    acceptedFiles:'.jpg,.jpeg,.png,.gif,.pdf',
+    parallelUploads: 6,
+    previewsContainer: '#preview',
+    previewTemplate: document.getElementById('preview-template').innerHTML,
+    url: '/images',
+    method: 'POST'
+  });
+
+  $(document).ready(function(){
+
+    $(document)
+        .on('dragover', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          $('#directions').modal('show');
+
+          $(this).on('mouseout', function() {
+            $('#directions').modal('hide');
+          });
+        })
+
+    Dropzone.autoDiscover = false;
+
+
+    $("#dropzone-area").on('drop', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      $('#directions').modal('hide');
+      $('#upload-form').modal('show');
+    })
+
+    $("#submit").click(function(){
+      myDropzone.processQueue();
+    })
+
+    myDropzone.on('success', function(file, response){
+      window.location.href = "/images/" + response.new_image_id
+    })
+
+
+  })
+
+</script>
